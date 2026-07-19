@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heimdal</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <main class="gate">
+    <div class="glyph">◇◇◇◇</div>
+    <p class="cryptic">Niet elk woord laat zich lezen. Sommige moet je breken.</p>
+
+    <form id="gate-form" autocomplete="off">
+      <label for="password">Wachtwoord</label>
+      <input type="password" id="password" name="password" autocomplete="off" spellcheck="false" required>
+      <button type="submit">Ontsluiten</button>
+      <p class="error" id="error" hidden>Onjuist wachtwoord.</p>
+    </form>
+
+    <section id="revealed" hidden></section>
+  </main>
+
+  <script src="assets/js/heimdal-crypto.js"></script>
+  <script src="assets/js/heimdal-gate.js"></script>
+  <script>
+    // VUL HIER DE OUTPUT VAN generate-page.js IN.
+    // De payload bevat een SHA-256 hash (het doelwit) + een hint. Spelers moeten
+    // zelf raden/bruteforcen met eigen woorden uit onze codex/geschiedenis; het
+    // woord waarvan de hash overeenkomt IS het volgende wachtwoord.
+    // Genereer het doelwit lokaal met:
+    //   node generate-page.js --sha256 --text "<echt antwoordwoord>"
+    // en versleutel de payload-JSON (hash + hint-tekst) met --password + --file.
+    // Huidige waarden zijn een placeholder testketen (repo is publiek, dus het
+    // testwachtwoord en het doelwoord staan expres niet in deze comment).
+    const PASSWORD_HASH = "cb47975e00d0c151dfce40cd3d8005a3c0db4f2abe6c9302b1c0339552e853fc";
+    const PBKDF2_SALT = "heimdal-arg-vaste-zout-waarde-2025";
+    const PBKDF2_ITERATIONS = 100000;
+    const CIPHERTEXT = "6kQHL3xmoDjNIWrTqh4aIP+NKbTa275Gwtqwi8M3pZepNKPDQfl2slpllMdL3PqUdn62CGjUbqeqYbOXTkzkCc40Esiv1uiOUtiw5NBTIdvlaJ4gq4G2eEgMqqcXUCz80Y3TCWx9fUD/m37qQRT56YzksOQZtry9vx5QZc87+q5GjWBmCtINRe7/OgdYBEF2onkdXYIghQBYR/ENWB/RSH2BTf0i9/gNkKBOwzGZy8ELrKs6gtPKYSdhckHptYhx7XK8Zd+2SGe1iXCK93ma4XpR3Ir0+E+rdrW4kWjnmvHKwS3gNNi8CMBLx8X5vh5ZfIG639NyG0NyRdEhOQ4SlptC2gsZVCgUUeIWPpOgB5svybPYXEsDQSgOkQ88CCP4CMU+V6IVokIsIBzU";
+    const IV = "XB1Vc6bEOGmbkULa";
+
+    HeimdalGate.init({
+      passwordHash: PASSWORD_HASH,
+      salt: PBKDF2_SALT,
+      iterations: PBKDF2_ITERATIONS,
+      ciphertext: CIPHERTEXT,
+      iv: IV,
+    });
+  </script>
+</body>
+</html>

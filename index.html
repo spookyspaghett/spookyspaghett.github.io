@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heimdal</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <main class="gate">
+    <div class="glyph">◇</div>
+
+    <!-- VUL HIER JOUW EIGEN CRYPTISCHE ZIN EN/OF AFBEELDING IN -->
+    <p class="cryptic">
+      Wie het zand doorstaat, hoort wat er onder ligt.
+    </p>
+
+    <form id="gate-form" autocomplete="off">
+      <label for="password">Wachtwoord</label>
+      <input type="password" id="password" name="password" autocomplete="off" spellcheck="false" required>
+      <button type="submit">Ontsluiten</button>
+      <p class="error" id="error" hidden>Onjuist wachtwoord.</p>
+    </form>
+
+    <section id="revealed" hidden></section>
+  </main>
+
+  <script src="assets/js/heimdal-crypto.js"></script>
+  <script src="assets/js/heimdal-gate.js"></script>
+  <script>
+    // VUL HIER DE OUTPUT VAN generate-page.js IN (wachtwoord #1 wordt extern
+    // bekendgemaakt via Instagram/Discord -- niet op deze pagina vermelden).
+    // Huidige waarden zijn een placeholder testketen (zie README: repo is publiek,
+    // dus het testwachtwoord staat expres niet in deze comment).
+    const PASSWORD_HASH = "273c31a4d8c496ddd240c2f374c8b3a01e2fd4b2debf18e807031e43272a5afe";
+    const PBKDF2_SALT = "heimdal-arg-vaste-zout-waarde-2025";
+    const PBKDF2_ITERATIONS = 100000;
+    const CIPHERTEXT = "cJgNVpEW4XZEaCRbvrawEf3WTkVVLySvDijbmdjqO7m4+ZtHAaIbdVeHGMb9U/hJEjelEqLqz5l8YWAfz6/vRV7Hfpiq+wIn3ttmbfCyeXB6+tc8z8pxVjA0OG9rDpZJpQrCN7WAaZhTaHjczzBMrw/mAgfzckMc/h46cE8k/KKV+5qPr64vTxsaJqxQFJxYnJczJpWib7UkttsPaFdetdjNbwxtMGDUUoZxND8S1c4mkDbwjuxkgGjMHZitxuFzXD1/N02aXdXVYPii44qH8dt3qa7qRsa7daQjahudKieNrCXHYD4MZsSJWx1+FpE=";
+    const IV = "BNdcyn0wtg5SEHCN";
+
+    HeimdalGate.init({
+      passwordHash: PASSWORD_HASH,
+      salt: PBKDF2_SALT,
+      iterations: PBKDF2_ITERATIONS,
+      ciphertext: CIPHERTEXT,
+      iv: IV,
+    });
+  </script>
+</body>
+</html>

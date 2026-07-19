@@ -1,0 +1,8 @@
+User-agent: *
+Disallow:
+
+# Niets hier is toevallig.
+# VUL HIER FRAGMENT A IN (eerste helft van het wachtwoord voor de finale pagina).
+# Combineer met fragment B uit assets/data/seismograaf.json (zichtbaar via de
+# Network-tab, zie pagina 5). Huidige waarde is een TEST-placeholder.
+# fragment-a: wacht
