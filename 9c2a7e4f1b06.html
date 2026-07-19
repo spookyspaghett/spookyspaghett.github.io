@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
 <body>
   <main class="gate">
     <div class="glyph">◇◇◇◇◇</div>
-    <p class="cryptic">Deze plek zendt meer uit dan ze toont.</p>
+    <p class="cryptic">This place transmits more than it shows.</p>
 
     <form id="gate-form" autocomplete="off">
-      <label for="password">Wachtwoord</label>
+      <label for="password">Password</label>
       <input type="password" id="password" name="password" autocomplete="off" spellcheck="false" required>
-      <button type="submit">Ontsluiten</button>
-      <p class="error" id="error" hidden>Onjuist wachtwoord.</p>
+      <button type="submit">Unlock</button>
+      <p class="error" id="error" hidden>Incorrect password.</p>
     </form>
 
     <section id="revealed" hidden></section>
@@ -24,24 +24,24 @@
   <script src="assets/js/heimdal-crypto.js"></script>
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
-    // Deze fetch-call loopt altijd, los van de wachtwoordpoort -- dat is opzet.
-    // Fragment B van het wachtwoord voor de finale pagina zit in de JSON-response
-    // hieronder en is alleen zichtbaar via de Network-tab (de respons wordt hier
-    // bewust NIET in de pagina getoond). Fragment A staat als comment in /robots.txt.
-    // VUL HIER (in assets/data/seismograaf.json) het echte fragment B in.
-    fetch('assets/data/seismograaf.json').catch(() => {});
+    // This fetch call always runs, independent of the password gate -- that's
+    // intentional. Fragment B of the password for the final page is in the
+    // JSON response below and is only visible via the Network tab (the response
+    // is deliberately NOT shown on the page). Fragment A is a comment in /robots.txt.
+    // FILL IN the real fragment B here (in assets/data/seismograph.json).
+    fetch('assets/data/seismograph.json').catch(() => {});
   </script>
   <script>
-    // VUL HIER DE OUTPUT VAN generate-page.js IN.
-    // De payload bevat enkel de hint-tekst die naar robots.txt + de Network-tab
-    // verwijst. Versleutel 'm met --password + --file.
-    // Huidige waarden zijn een placeholder testketen (repo is publiek, dus het
-    // testwachtwoord staat expres niet in deze comment).
+    // FILL IN THE OUTPUT OF generate-page.js HERE.
+    // The payload only contains the hint text pointing to robots.txt + the
+    // Network tab. Encrypt it with --password + --file.
+    // Current values are a placeholder test chain (the repo is public, so the
+    // test password is deliberately not in this comment).
     const PASSWORD_HASH = "52b888da45a5d1214519975719b4e08e173f3a6369ca8c05668289f9326844d8";
-    const PBKDF2_SALT = "heimdal-arg-vaste-zout-waarde-2025";
+    const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;
-    const CIPHERTEXT = "zY3y4YiU3AhTVsJlgHqGAkMai+x8ZJO1JfFQrmk7+BcfZPdkhiwXWRgrYQUDTBxRx7lQedVqLpVjqYr/qiJmxlekh9YngBjhUwagqz1KZgkBaK2XJ6m/FD+K7A10sJfDVPkw3KvXw96o8tyLz3P1RpGD4EeqJXMYvDcBbzV6lgZl9O+HoCZ7ZHHi8J6ijf4k4nP649+lQIU9HVapnaEUbvblWRysbkZ2vZMxwgsX8mHYARamNXuXW1ZNAmVdarsinQ69ulcEtip1++N6nux1lxB5OL6RGctGg8mGPsyAf7YHgry7vGjkLGPCq5sHZP6Hyhhlu9YHPd55Y02MWUUMQIM0y9rgBV+7HP0BauceP2XZ5tK1nmDqbAO6JFScyD+2ucikYoUfAsc0y6FZ0LTSzvsGzxhNUHyDKKWmkuCya3U61KxNdD5MqUun+U8fIPcgNt+DKomYbYzvymI=";
-    const IV = "FQp6voV0LRcRBps7";
+    const CIPHERTEXT = "JNb1leQkSknJFM6BbhPriNARTA5Sjxlr44jYRtJbzsrcn104zQUcnIURIpHiGVbmjCJj/Xa9CrdPehGSvJokLUjz8JbP+OKQ5iMjAZv6NLU/RZpn0VF00rMa9SW//og9aC9sKb15laQctDEsGygHZHqK4M/+PULmNmSzPdKpuOUQpS6UDNj1H4V55HmJaT+q72e/Gc7gn+xNhS4t1eSlONHnB/LyZLdy95qMkdoDHCWvDBHCdPaJ7laxePz3JCdTh5DigSIjTBg/K4joCbIWGZF66QMOtnWULuZbNlXmbHI5lWjI8ajzUe1QLY1i8F29uh9x3WYND4/wwhTo57yQaHaFMatLHcpRy0fY4+j7dEyUAuUmpqI36rgYv0u8dJ6Wr9Hbu8F/lxRgkjBtlcajfP0Ghg+BwBo16kYvDgO6UdhQfQ==";
+    const IV = "f9TPik+iV8YksqRk";
 
     HeimdalGate.init({
       passwordHash: PASSWORD_HASH,

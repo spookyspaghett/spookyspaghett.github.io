@@ -1,14 +1,14 @@
-// Herbruikbare "wachtwoordpoort"-logica die elke pagina van de keten gebruikt.
-// Vereist dat heimdal-crypto.js al is ingeladen.
+// Reusable "password gate" logic used by every page in the chain.
+// Requires heimdal-crypto.js to already be loaded.
 (function (global) {
   function $(sel, root) {
     return (root || document).querySelector(sel);
   }
 
   // config:
-  //   passwordHash, salt, iterations, ciphertext, iv  -> uit generate-page.js
+  //   passwordHash, salt, iterations, ciphertext, iv  -> from generate-page.js
   //   formSelector, passwordInputSelector, errorSelector, revealedSelector
-  //   onReveal(payload, revealedEl)  -> optioneel, override voor custom weergave
+  //   onReveal(payload, revealedEl)  -> optional, override for custom rendering
   function init(config) {
     const form = $(config.formSelector || '#gate-form');
     const errorEl = $(config.errorSelector || '#error');
@@ -23,7 +23,7 @@
       try {
         const hash = await HeimdalCrypto.sha256Hex(pw);
         if (hash !== config.passwordHash) {
-          throw new Error('onjuist wachtwoord');
+          throw new Error('incorrect password');
         }
 
         const plaintext = await HeimdalCrypto.decryptText(
@@ -43,7 +43,7 @@
             const link = document.createElement('a');
             link.href = payload.next;
             link.className = 'next-link';
-            link.textContent = payload.nextLabel || 'Ga verder →';
+            link.textContent = payload.nextLabel || 'Continue →';
             revealedEl.appendChild(link);
           }
         }

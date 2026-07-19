@@ -1,191 +1,189 @@
 # Heimdal ARG
 
-Statische, client-side ARG-site (geen backend) die het jaarthema teasert via een keten
-van 6 wachtwoord-vergrendelde pagina's. Puur HTML/CSS/JS, geen build step, draait direct
-op GitHub Pages.
+Static, client-side ARG site (no backend) that teases the upcoming year's theme through a
+chain of 6 password-locked pages. Pure HTML/CSS/JS, no build step, runs directly on
+GitHub Pages.
 
-## Structuur
+## Structure
 
 ```
-index.html                 pagina 1 -- landing + wachtwoord #1 (extern bekendgemaakt)
-b7f2e9a1c4d8.html           pagina 2 -- foto + Caesar cipher (shift uit het clublied)
-3f8a6c2e9d17.html           pagina 3 -- encoding-stack (hex -> ROT13 -> base64)
-e1d4b9f6a832.html           pagina 4 -- SHA-256 hash-crack
-9c2a7e4f1b06.html           pagina 5 -- devtools puzzel (robots.txt + Network-tab)
-5d8f1a9c6e23.html           pagina 6 -- finale teaser
-robots.txt                  bevat fragment A voor de pagina 5-puzzel
-assets/css/style.css        gedeeld donker/zand thema
-assets/js/heimdal-crypto.js gedeelde Web Crypto helpers (SHA-256, PBKDF2, AES-GCM)
-assets/js/heimdal-gate.js   gedeelde wachtwoordpoort-logica (door elke pagina gebruikt)
-assets/data/seismograaf.json bevat fragment B voor de pagina 5-puzzel (alleen zichtbaar
-                             via de Network-tab, niet gelinkt in de UI)
-generate-page.js            los te draaien Node-tool om wachtwoorden/content te versleutelen
+index.html                  page 1 -- landing + password #1 (announced externally)
+b7f2e9a1c4d8.html           page 2 -- photo + Caesar cipher (shift from the club song)
+3f8a6c2e9d17.html           page 3 -- encoding stack (hex -> ROT13 -> base64)
+e1d4b9f6a832.html           page 4 -- SHA-256 hash crack
+9c2a7e4f1b06.html           page 5 -- devtools puzzle (robots.txt + Network tab)
+5d8f1a9c6e23.html           page 6 -- final teaser
+robots.txt                  contains fragment A for the page 5 puzzle
+assets/css/style.css        shared dark/sand theme
+assets/js/heimdal-crypto.js shared Web Crypto helpers (SHA-256, PBKDF2, AES-GCM)
+assets/js/heimdal-gate.js   shared password-gate logic (used by every page)
+assets/data/seismograph.json contains fragment B for the page 5 puzzle (only visible
+                             via the Network tab, not linked in the UI)
+generate-page.js            standalone Node tool to encrypt passwords/content
 ```
 
-De bestandsnamen van pagina 2 t/m 6 zijn bewust niet-voorspelbaar (hash-achtige strings,
-geen `pagina1.html` etc.). Ze staan nergens als statische link in de broncode -- elke
-link naar de volgende pagina wordt pas na een correct wachtwoord door JavaScript in de
-DOM gezet.
+The filenames for pages 2 through 6 are deliberately unpredictable (hash-like strings,
+not `page1.html` etc.). They never appear as a static link in the source -- the link to
+the next page is only inserted into the DOM by JavaScript after a correct password.
 
-## Hoe de keten werkt
+## How the chain works
 
-Elke pagina toont alleen een wachtwoordveld. Bij het indienen:
+Every page only shows a password field. On submit:
 
-1. Het ingevoerde wachtwoord wordt gehasht (SHA-256) en vergeleken met de opgeslagen hash.
-2. Bij een match wordt een AES-GCM sleutel afgeleid van datzelfde wachtwoord via PBKDF2
-   (vaste salt, 100.000+ iteraties) en wordt de versleutelde payload van die pagina
-   ontsleuteld.
-3. De payload is JSON: `{ "html": "...", "next": "bestandsnaam.html", "nextLabel": "..." }`.
-   De `html` wordt in de pagina getoond (dit is de puzzel/inhoud voor die pagina), en de
-   link naar de volgende pagina wordt pas nu, via JS, toegevoegd.
-4. De speler lost de puzzel in de getoonde `html` op (Caesar-decode, encoding-stack
-   afpellen, hash kraken, of de devtools-puzzel) om het wachtwoord voor de *volgende*
-   pagina te vinden.
+1. The entered password is hashed (SHA-256) and compared against the stored hash.
+2. On a match, an AES-GCM key is derived from that same password via PBKDF2 (fixed salt,
+   100,000+ iterations), and that page's encrypted payload is decrypted.
+3. The payload is JSON: `{ "html": "...", "next": "filename.html", "nextLabel": "..." }`.
+   The `html` is shown on the page (this is the puzzle/content for that page), and the
+   link to the next page is only now added via JS.
+4. The player solves the puzzle in the displayed `html` (Caesar decode, peeling back the
+   encoding stack, cracking the hash, or the devtools puzzle) to find the password for
+   the *next* page.
 
-**Nergens staat een plaintext-wachtwoord in de code.** Alleen SHA-256 hashes en AES-GCM
-ciphertext staan in de repo -- die zijn nutteloos zonder het juiste wachtwoord.
+**No plaintext password ever sits in the code.** Only SHA-256 hashes and AES-GCM
+ciphertext live in the repo -- both are useless without the right password.
 
-Op dit moment bevat elke pagina een **werkende testketen** (gegenereerd met
-`generate-page.js`) zodat je kan verifiëren dat de crypto-pipeline werkt voor je de
-echte puzzels invult. Omdat deze repo publiek is, staan de testwachtwoorden **niet** in
-dit bestand of in code-comments -- vraag ze na bij wie de site heeft opgezet, of genereer
-zelf een eigen testketen met `generate-page.js` (zie hieronder) en test daarmee. Vervang
-alles door je echte puzzels/antwoorden zodra je zover bent. Alle plekken die je moet
-aanpassen zijn gemarkeerd met `// VUL HIER ... IN` commentaar in de HTML-bestanden.
+Right now every page contains a **working test chain** (generated with
+`generate-page.js`) so you can verify the crypto pipeline works before filling in the
+real puzzles. Because this repo is public, the test passwords are **not** written in
+this file or in code comments -- ask whoever set up the site, or generate your own test
+chain with `generate-page.js` (see below) and test with that. Replace everything with
+your real puzzles/answers once you're ready. Every spot you need to edit is marked with
+a `// FILL IN ... HERE` comment in the HTML files.
 
-## Lokaal testen
+## Testing locally
 
-Omdat pagina 5 een `fetch()`-call doet (nodig voor de devtools-puzzel), moet je de site
-via een lokale server bekijken -- niet door de HTML-bestanden direct te openen
-(`file://`), want browsers blokkeren `fetch()` naar lokale bestanden onder `file://`.
+Because page 5 makes a `fetch()` call (needed for the devtools puzzle), you need to view
+the site through a local server -- not by opening the HTML files directly (`file://`),
+since browsers block `fetch()` to local files under `file://`.
 
-Met Node (al vereist voor `generate-page.js`):
+With Node (already required for `generate-page.js`):
 
 ```bash
 npx serve .
-# of
+# or
 npx http-server .
 ```
 
-Of met Python:
+Or with Python:
 
 ```bash
 python -m http.server 8000
 ```
 
-Open daarna `http://localhost:8000/` (of de poort die de tool meldt) en loop de keten
-door met je testwachtwoorden. Gebruik de DevTools Network-tab op pagina 5 om te
-controleren dat `assets/data/seismograaf.json` zichtbaar is, en bekijk `robots.txt` in de
-browser om fragment A te zien.
+Then open `http://localhost:8000/` (or whichever port the tool reports) and walk the
+chain with your test passwords. Use the DevTools Network tab on page 5 to confirm
+`assets/data/seismograph.json` is visible, and check `robots.txt` in the browser to see
+fragment A.
 
-## `generate-page.js` gebruiken
+## Using `generate-page.js`
 
-Vereist Node.js 18+ (gebruikt de ingebouwde `node:crypto` webcrypto-implementatie, geen
-dependencies). Dit script draai je alleen lokaal -- het is geen onderdeel van de site.
+Requires Node.js 18+ (uses the built-in `node:crypto` webcrypto implementation, no
+dependencies). Only ever run this script locally -- it is not part of the live site.
 
-### 1. Wachtwoord-hash + versleutelde payload genereren (hoofdmodus)
+### 1. Generate a password hash + encrypted payload (main mode)
 
 ```bash
-node generate-page.js --password "mijn-echte-wachtwoord" --text "letterlijke inhoud"
-# of, voor langere/JSON-inhoud:
-node generate-page.js --password "mijn-echte-wachtwoord" --file payload.json
+node generate-page.js --password "my-real-password" --text "literal content"
+# or, for longer/JSON content:
+node generate-page.js --password "my-real-password" --file payload.json
 ```
 
-`payload.json` moet de exacte JSON zijn die de pagina verwacht, bijvoorbeeld:
+`payload.json` must be exactly the JSON the page expects, for example:
 
 ```json
 {
-  "html": "<p>Je puzzeltekst hier...</p>",
+  "html": "<p>Your puzzle text here...</p>",
   "next": "3f8a6c2e9d17.html",
-  "nextLabel": "Volg het spoor →"
+  "nextLabel": "Follow the trail →"
 }
 ```
 
-De output bevat 5 kant-en-klare `const`-regels
-(`PASSWORD_HASH`, `PBKDF2_SALT`, `PBKDF2_ITERATIONS`, `CIPHERTEXT`, `IV`) die je plakt op
-de plek van `// VUL HIER ... IN` in de bijbehorende HTML-pagina.
+The output contains 5 ready-to-paste `const` lines
+(`PASSWORD_HASH`, `PBKDF2_SALT`, `PBKDF2_ITERATIONS`, `CIPHERTEXT`, `IV`) that you paste
+at the `// FILL IN ... HERE` spot in the corresponding HTML page.
 
-> Genereer je voor dezelfde pagina meerdere keren (bv. je past de tekst nog aan), gebruik
-> dan telkens hetzelfde wachtwoord en dezelfde `--salt` zodat `PASSWORD_HASH` niet per
-> ongeluk verandert.
+> If you generate for the same page more than once (e.g. you tweak the text), reuse the
+> same password and the same `--salt` each time so `PASSWORD_HASH` doesn't accidentally
+> change.
 
-### 2. Foto omzetten naar data-URL (voor pagina 2)
-
-```bash
-node generate-page.js --image pad/naar/foto.jpg
-```
-
-Print een `data:image/...;base64,...` string. Plak die in een `<img src="...">` binnen je
-`html`-veld van de payload-JSON, en versleutel die JSON zoals hierboven.
-
-### 3. Caesar-cijfertekst genereren (voor pagina 2)
-
-De shift-waarde komt uit het clublied en staat **nergens** in de site -- alleen in dit
-lokale commando:
+### 2. Convert a photo to a data URL (for page 2)
 
 ```bash
-node generate-page.js --caesar --shift 7 --text "wachtwoord van de volgende pagina"
+node generate-page.js --image path/to/photo.jpg
 ```
 
-Plak de geprinte cijfertekst in de `html` van pagina 2's payload-JSON (bv. in een
-`<pre>`), en versleutel die JSON met stap 1.
+Prints a `data:image/...;base64,...` string. Paste that into an `<img src="...">` inside
+the `html` field of your payload JSON, and encrypt that JSON as above.
 
-### 4. Encoding-stack genereren (voor pagina 3)
+### 3. Generate Caesar ciphertext (for page 2)
+
+The shift value comes from the club song and is **nowhere** in the site -- only in this
+local command:
 
 ```bash
-node generate-page.js --encode-stack --text "wachtwoord van de volgende pagina"
+node generate-page.js --caesar --shift 7 --text "password for the next page"
 ```
 
-Past hex -> ROT13 -> base64 toe. Spelers moeten dit terugpellen (base64 decoderen, dan
-ROT13, dan hex decoderen) om het wachtwoord te vinden.
+Paste the printed ciphertext into the `html` of page 2's payload JSON (e.g. in a
+`<pre>`), and encrypt that JSON with step 1.
 
-### 5. SHA-256 doelwit genereren (voor pagina 4)
+### 4. Generate the encoding stack (for page 3)
 
 ```bash
-node generate-page.js --sha256 --text "antwoord uit onze codex/geschiedenis"
+node generate-page.js --encode-stack --text "password for the next page"
 ```
 
-Plak de hash in de `html` van pagina 4's payload (het doelwit dat spelers moeten kraken).
+Applies hex -> ROT13 -> base64. Players must peel this back (base64 decode, then ROT13,
+then hex decode) to find the password.
 
-## Placeholders die je zelf moet invullen
+### 5. Generate a SHA-256 target (for page 4)
 
-| Plek | Wat |
+```bash
+node generate-page.js --sha256 --text "answer from our codex/history"
+```
+
+Paste the hash into the `html` of page 4's payload (the target players must crack).
+
+## Placeholders you need to fill in
+
+| Spot | What |
 |---|---|
-| `index.html` | Cryptische zin/afbeelding + echte `PASSWORD_HASH`/`CIPHERTEXT` voor wachtwoord #1 |
-| `b7f2e9a1c4d8.html` | Echte foto + Caesar-cijfertekst (shift uit clublied) + echte crypto-constanten |
-| `3f8a6c2e9d17.html` | Echte encoding-stack boodschap + crypto-constanten |
-| `e1d4b9f6a832.html` | Echte SHA-256 doelwit + hint-tekst + crypto-constanten |
-| `9c2a7e4f1b06.html` | Crypto-constanten (hint-tekst verwijst al naar robots.txt + Network-tab) |
-| `5d8f1a9c6e23.html` | Finale teaser-tekst/foto/video in de `.teaser-placeholder` sectie + crypto-constanten |
-| `robots.txt` | Fragment A (comment onderaan) |
-| `assets/data/seismograaf.json` | Fragment B (`"fragment"` veld) |
+| `index.html` | Cryptic sentence/image + real `PASSWORD_HASH`/`CIPHERTEXT` for password #1 |
+| `b7f2e9a1c4d8.html` | Real photo + Caesar ciphertext (shift from the club song) + real crypto constants |
+| `3f8a6c2e9d17.html` | Real encoding-stack message + crypto constants |
+| `e1d4b9f6a832.html` | Real SHA-256 target + hint text + crypto constants |
+| `9c2a7e4f1b06.html` | Crypto constants (hint text already points to robots.txt + Network tab) |
+| `5d8f1a9c6e23.html` | Final teaser text/photo/video in the `.teaser-placeholder` section + crypto constants |
+| `robots.txt` | Fragment A (comment at the bottom) |
+| `assets/data/seismograph.json` | Fragment B (the `"fragment"` field) |
 
-Elke plek is gemarkeerd met `// VUL HIER ... IN` (of het JSON-equivalent) in de code.
+Every spot is marked with `// FILL IN ... HERE` (or the JSON equivalent) in the code.
 
-## Live op GitHub Pages
+## Going live on GitHub Pages
 
-1. Push deze repo naar `<gebruiker>.github.io` (of een gewone repo + Pages-instelling).
-2. Zorg dat alle wachtwoorden/content vervangen zijn door de echte versies (zie hierboven)
-   voordat je live gaat -- de testketen is alleen bedoeld om lokaal te verifiëren dat
-   alles werkt, niet om live te blijven staan.
-3. Ga naar **Settings -> Pages** in de GitHub-repo, kies de branch (meestal `main`) en map
-   `/ (root)`.
-4. Na een paar minuten is de site live op `https://<gebruiker>.github.io/` (of je custom
-   domain als je die instelt).
-5. GitHub Pages serveert alles static, dus de `fetch()`-puzzel op pagina 5 werkt daar
-   vanzelf (geen CORS-probleem zoals bij `file://` lokaal).
+1. Push this repo to `<username>.github.io` (or a regular repo + Pages setting).
+2. Make sure all passwords/content have been replaced with the real versions (see above)
+   before you go live -- the test chain is only meant to verify locally that everything
+   works, not to stay live.
+3. Go to **Settings -> Pages** in the GitHub repo, pick the branch (usually `main`) and
+   the `/ (root)` folder.
+4. After a few minutes the site is live at `https://<username>.github.io/` (or your
+   custom domain if you set one up).
+5. GitHub Pages serves everything statically, so the `fetch()` puzzle on page 5 just
+   works there (no CORS issue like locally under `file://`).
 
-## Beveiligingsnotities
+## Security notes
 
-- Er staat geen enkel plaintext-wachtwoord in de repo -- alleen SHA-256 hashes.
-- Alle pagina-inhoud (tekst/foto) is AES-GCM versleuteld; de sleutel wordt per pagina via
-  PBKDF2 afgeleid van het wachtwoord van die pagina zelf. Zonder het juiste wachtwoord is
-  de ciphertext in de repo waardeloos.
-- De salt is publiek (staat in de code) -- dat is normaal voor PBKDF2. De veiligheid zit
-  in de hoge iteratiecount + de entropie van je wachtwoorden, niet in het geheim houden
-  van de salt.
-- Kies wachtwoorden die niet triviaal te raden zijn zodra een speler weet dat het om deze
-  ARG gaat. De testketen die nu in de code zit is puur voor lokaal testen en hoort niet
-  in de live/publieke versie te blijven staan.
-- Schrijf nergens (README, comments, commit messages) een echt of test-antwoord uit --
-  deze repo is publiek, dus alles wat je hier typt is voor iedereen leesbaar.
+- No plaintext password ever sits in the repo -- only SHA-256 hashes.
+- All page content (text/photo) is AES-GCM encrypted; the key is derived per page via
+  PBKDF2 from that page's own password. Without the right password, the ciphertext in
+  the repo is worthless.
+- The salt is public (it's in the code) -- that's normal for PBKDF2. The security comes
+  from the high iteration count and the entropy of your passwords, not from keeping the
+  salt secret.
+- Pick passwords that aren't trivial to guess once a player knows it's this ARG. The test
+  chain currently in the code is purely for local testing and should not stay in the
+  live/public version.
+- Never write a real or test answer anywhere (README, comments, commit messages) -- this
+  repo is public, so anything you type here is readable by everyone.

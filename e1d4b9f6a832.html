@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
 <body>
   <main class="gate">
     <div class="glyph">◇◇◇◇</div>
-    <p class="cryptic">Niet elk woord laat zich lezen. Sommige moet je breken.</p>
+    <p class="cryptic">Not every word can be read. Some must be broken.</p>
 
     <form id="gate-form" autocomplete="off">
-      <label for="password">Wachtwoord</label>
+      <label for="password">Password</label>
       <input type="password" id="password" name="password" autocomplete="off" spellcheck="false" required>
-      <button type="submit">Ontsluiten</button>
-      <p class="error" id="error" hidden>Onjuist wachtwoord.</p>
+      <button type="submit">Unlock</button>
+      <p class="error" id="error" hidden>Incorrect password.</p>
     </form>
 
     <section id="revealed" hidden></section>
@@ -24,20 +24,20 @@
   <script src="assets/js/heimdal-crypto.js"></script>
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
-    // VUL HIER DE OUTPUT VAN generate-page.js IN.
-    // De payload bevat een SHA-256 hash (het doelwit) + een hint. Spelers moeten
-    // zelf raden/bruteforcen met eigen woorden uit onze codex/geschiedenis; het
-    // woord waarvan de hash overeenkomt IS het volgende wachtwoord.
-    // Genereer het doelwit lokaal met:
-    //   node generate-page.js --sha256 --text "<echt antwoordwoord>"
-    // en versleutel de payload-JSON (hash + hint-tekst) met --password + --file.
-    // Huidige waarden zijn een placeholder testketen (repo is publiek, dus het
-    // testwachtwoord en het doelwoord staan expres niet in deze comment).
+    // FILL IN THE OUTPUT OF generate-page.js HERE.
+    // The payload contains a SHA-256 hash (the target) + a hint. Players must
+    // guess/brute-force it themselves with their own words from our codex/history;
+    // the word whose hash matches IS the next password.
+    // Generate the target locally with:
+    //   node generate-page.js --sha256 --text "<real answer word>"
+    // then encrypt the payload JSON (hash + hint text) with --password + --file.
+    // Current values are a placeholder test chain (the repo is public, so the
+    // test password and target word are deliberately not in this comment).
     const PASSWORD_HASH = "cb47975e00d0c151dfce40cd3d8005a3c0db4f2abe6c9302b1c0339552e853fc";
-    const PBKDF2_SALT = "heimdal-arg-vaste-zout-waarde-2025";
+    const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;
-    const CIPHERTEXT = "6kQHL3xmoDjNIWrTqh4aIP+NKbTa275Gwtqwi8M3pZepNKPDQfl2slpllMdL3PqUdn62CGjUbqeqYbOXTkzkCc40Esiv1uiOUtiw5NBTIdvlaJ4gq4G2eEgMqqcXUCz80Y3TCWx9fUD/m37qQRT56YzksOQZtry9vx5QZc87+q5GjWBmCtINRe7/OgdYBEF2onkdXYIghQBYR/ENWB/RSH2BTf0i9/gNkKBOwzGZy8ELrKs6gtPKYSdhckHptYhx7XK8Zd+2SGe1iXCK93ma4XpR3Ir0+E+rdrW4kWjnmvHKwS3gNNi8CMBLx8X5vh5ZfIG639NyG0NyRdEhOQ4SlptC2gsZVCgUUeIWPpOgB5svybPYXEsDQSgOkQ88CCP4CMU+V6IVokIsIBzU";
-    const IV = "XB1Vc6bEOGmbkULa";
+    const CIPHERTEXT = "B5VaXE1LdUBhlNCXSfcW+wVRmRv9LGw2t3bx3s3a1mre/8w3Ii17HvW2qJWupdLiLuw0Y94cxAWCP4+sqAF+00shGF3xoIzdRAQ+ITcZGNZiKe2/ZL9LwO5WqsVnqY+jwYHDOI+R2r3bs7oj76CK8CCxO1IrA5n1YUOoOvYcbCfbeZxNtK+WPvFoAIEtBzEU9YmpVp58iNd1ECI3cXxATwS8Se0OmokcCFsrjak2FUzXxOi5UykNngWs2d/lTL9DrOYa5XBE93vGNkrnCdDYDviNxkRaWHzJdt0+y4+43wA19p9/zGD8xxxxrsWMlNyJc+jcTzcw5Jb7kfuP2UIpY/q0iAj9Nk5aQ0azfZstWB7kUEffm133S0uy2emErPQm2gIzsvviZNwXn2v/";
+    const IV = "hIqAd868MqGzT5/Z";
 
     HeimdalGate.init({
       passwordHash: PASSWORD_HASH,
