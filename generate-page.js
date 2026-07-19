@@ -15,6 +15,7 @@
  *   node generate-page.js --password "secret" --file page2-payload.json
  *   node generate-page.js --image path/to/photo.jpg
  *   node generate-page.js --caesar --shift 7 --text "message"
+ *   node generate-page.js --xor --text "message" --key-file clublied.txt
  *   node generate-page.js --encode-stack --text "message"
  *   node generate-page.js --sha256 --text "candidate answer"
  *   node generate-page.js --base64 --text "message or URL"
@@ -107,6 +108,26 @@ function caesarShift(text, shift) {
     const base = ch <= 'Z' ? 65 : 97;
     return String.fromCharCode(((ch.charCodeAt(0) - base + n) % 26) + base);
   });
+}
+
+// ---- XOR-with-key cipher utility (the key text, e.g. the club song, stays local only) ----
+function xorEncode(text, keyText) {
+  const textBytes = Buffer.from(text, 'utf8');
+  const keyBytes = Buffer.from(keyText, 'utf8');
+  const out = [];
+  for (let i = 0; i < textBytes.length; i++) {
+    out.push(textBytes[i] ^ keyBytes[i % keyBytes.length]);
+  }
+  return out;
+}
+
+function xorDecode(numbers, keyText) {
+  const keyBytes = Buffer.from(keyText, 'utf8');
+  const out = Buffer.alloc(numbers.length);
+  for (let i = 0; i < numbers.length; i++) {
+    out[i] = numbers[i] ^ keyBytes[i % keyBytes.length];
+  }
+  return out.toString('utf8');
 }
 
 // ---- Encoding-stack utility: plaintext -> hex -> rot13 -> base64 ----
@@ -521,6 +542,47 @@ async function main() {
     return;
   }
 
+  // --- Utility: XOR-with-key cipher (e.g. the club song text as the key, NEVER on the site) ---
+  if (args.xor) {
+    if (!args.text || (!args.key && !args['key-file'])) {
+      console.error(
+        'Usage: node generate-page.js --xor --text "<message>" --key "<key text>"\n' +
+          '   or: node generate-page.js --xor --text "<message>" --key-file <path>'
+      );
+      process.exit(1);
+    }
+    const keyText = args['key-file']
+      ? fs.readFileSync(path.resolve(String(args['key-file'])), 'utf8')
+      : String(args.key);
+    const numbers = xorEncode(String(args.text), keyText);
+    printBlock([
+      'XOR key (do NOT put this on the site, only give players a hint toward it):',
+      keyText.length > 60 ? keyText.slice(0, 60) + '...' : keyText,
+      'Numbers to show on the page (comma-separated):',
+      numbers.join(','),
+    ]);
+    return;
+  }
+
+  // --- Utility: verify an --xor result decodes back correctly ---
+  if (args['xor-decode']) {
+    if (!args.numbers || (!args.key && !args['key-file'])) {
+      console.error(
+        'Usage: node generate-page.js --xor-decode --numbers "41,11,88,..." --key "<key text>"\n' +
+          '   or: node generate-page.js --xor-decode --numbers "41,11,88,..." --key-file <path>'
+      );
+      process.exit(1);
+    }
+    const keyText = args['key-file']
+      ? fs.readFileSync(path.resolve(String(args['key-file'])), 'utf8')
+      : String(args.key);
+    const numbers = String(args.numbers)
+      .split(',')
+      .map((n) => parseInt(n.trim(), 10));
+    printBlock(['Decoded message:', xorDecode(numbers, keyText)]);
+    return;
+  }
+
   // --- Utility: encoding-stack (hex -> rot13 -> base64) ---
   if (args['encode-stack']) {
     if (!args.text) {
@@ -611,6 +673,7 @@ async function main() {
         '  node generate-page.js --password "secret" --file payload.json\n' +
         '  node generate-page.js --image path/to/photo.jpg\n' +
         '  node generate-page.js --caesar --shift 7 --text "message"\n' +
+        '  node generate-page.js --xor --text "message" --key-file clublied.txt\n' +
         '  node generate-page.js --encode-stack --text "message"\n' +
         '  node generate-page.js --base64 --text "message or URL"\n' +
         '  node generate-page.js --sha256 --text "candidate answer"\n' +
@@ -655,6 +718,8 @@ module.exports = {
   sha256Hex,
   encryptText,
   caesarShift,
+  xorEncode,
+  xorDecode,
   encodeStack,
   readImage,
   parseBmp,

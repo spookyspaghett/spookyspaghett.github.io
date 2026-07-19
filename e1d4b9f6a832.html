@@ -24,20 +24,20 @@
   <script src="assets/js/heimdal-crypto.js"></script>
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
-    // FILL IN THE OUTPUT OF generate-page.js HERE.
-    // The payload's `html` should contain visible hint text PLUS the SHA-256
-    // target hidden as an HTML comment (<!-- target-hash: ... -->) rather than
-    // shown as plain visible text -- players have to open View Source or the
-    // DevTools Elements panel (F12) to find it, then crack it with their own
-    // word list. Generate the target locally with:
+    // Real password #4 is wired in (recovered from page 3's XOR/club-song puzzle --
+    // never written here, this is a public repo). The payload's `html` still
+    // contains a PLACEHOLDER hint + target hash -- replace the target with your
+    // real one once you have it:
     //   node generate-page.js --sha256 --text "<real answer word>"
-    // then encrypt the payload JSON (hint text + hidden comment) with
-    // --password + --file.
-    const PASSWORD_HASH = "cb47975e00d0c151dfce40cd3d8005a3c0db4f2abe6c9302b1c0339552e853fc";
+    // Keep the hash hidden as an HTML comment (<!-- target-hash: ... -->) rather
+    // than plain visible text -- players have to open View Source or the
+    // DevTools Elements panel (F12) to find it. Re-encrypt with the SAME real
+    // password (see your own notes) + --file so PASSWORD_HASH stays correct.
+    const PASSWORD_HASH = "044b32ea7465a1bb8eeed60e0fec9e8e147ebe87d0cca89e24b2919722c87792";
     const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;
-    const CIPHERTEXT = "rMrxt/01CcOHutJnpze5jSmB0Ut7nIlZ9Fm0bOvXzbZ3SMcquTJn1wQyuB6g8f3J6jBorI0iV1ZpUsLcJ5FjtRF6LpGWT/WOALvUHJScMuh3RPbSGNG3UST3TOFHEu6Hs8z+P/wDjInb6sPL59Jf+HSRbDWbg5HjNbPq4AnfPiiUAQGc+gOsGIGkEwDAe+iW/yBjxjXnoAr15X0gugX0unysvew3fnKRoSQAT7uzZsHoxFLJ8Bj9qCM6+2eK0Hqr0KHRttcVKFiII+hitEBM3B0WdIZehL0Z/lkoQr08FjdyvxU6myhhoDxIjPsCzUo44pvkZzBIfgdnryYieDaCJFtdgQbfT1yJ8mrk4Gd3Ui1HJ9qwTZH5jwqaLwLg3mvZPFg/RsEdN9oDlEMmSfoEe44+BSp1io9FIfABfppXfw9+uUXh/dfvlC0P29uj3q2f8zDaGKINsQW4bxAxUhaQNAaptbN7ed2Vmg4oc0FOs9y4";
-    const IV = "luzQfQiIeaSCFVc/";
+    const CIPHERTEXT = "37RTIBz3LJesJHjv0G5zxvkMUqkQurPAn3/uSCz1FhSZCJWaRCq2ohzhu1TgYF4EhmMMY/Qqrt1BUuBN+3AA9EmBZTfErhWHpanBsGAGZv0jY2JckLWG8tGrWrciAn4/J0X/wpTnSGZROeV3k9/x3RCvh9RNp4JxlPP2rCZFwR9twbmffhYxmHaefI0T9lGZKsBM55dumW7thZ83Ya+AZUQkJPFI0O5mDuiDt8wpgLaBgpCTPmCMLV7TAk/XaUh43OK8ccfearsrj9HKWFzcCz2D2SWEi+EO7ZYI6PDn7ul95YZK3U4Z7vRZXP9lHS4HvHYUhfFQ5DadTEMRS3JxhK3qsR4gCKUzHCT0kRTkfiL8isbDn/BtWE0bjBSNNawcVlsfT6akXBS2N6VTCzgkySNU6MAwiW5OanobEKrtOEQ9LhC/qDpD73+xqivAaknNTiOCZ7eukji6sYHhlCy7GeOfTvsaDK62K9tUAZejZxvB5Q==";
+    const IV = "6RFhcWAKHvFl28UC";
 
     HeimdalGate.init({
       passwordHash: PASSWORD_HASH,
