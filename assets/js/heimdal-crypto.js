@@ -1,6 +1,6 @@
-// Gedeelde crypto-helpers voor de Heimdal ARG-site.
-// Gebruikt uitsluitend de browser-native Web Crypto API (crypto.subtle) -- geen externe libs.
-// Wordt als gewoon <script> (geen module) ingeladen zodat de site ook via file:// getest kan worden.
+// Shared crypto helpers for the Heimdal ARG site.
+// Uses only the browser-native Web Crypto API (crypto.subtle) -- no external libs.
+// Loaded as a plain <script> (not a module) so the site can also be tested via file://.
 (function (global) {
   const enc = new TextEncoder();
   const dec = new TextDecoder();
@@ -42,7 +42,7 @@
     );
   }
 
-  // Gooit een Error als het wachtwoord fout is (AES-GCM auth tag klopt dan niet).
+  // Throws an Error if the password is wrong (the AES-GCM auth tag won't match).
   async function decryptText(ciphertextB64, ivB64, password, saltStr, iterations) {
     const key = await deriveAesKey(password, saltStr, iterations);
     const iv = base64ToBytes(ivB64);

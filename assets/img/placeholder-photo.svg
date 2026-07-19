@@ -17,5 +17,5 @@
   <path d="M0,260 Q160,200 320,250 T640,230 V400 H0 Z" fill="url(#dune1)"/>
   <path d="M0,320 Q200,270 420,310 T640,300 V400 H0 Z" fill="url(#dune2)"/>
   <circle cx="500" cy="90" r="46" fill="#ece6d8" opacity="0.85"/>
-  <text x="320" y="380" text-anchor="middle" font-family="monospace" font-size="14" fill="#ada592" letter-spacing="3">VUL HIER EIGEN FOTO IN VIA generate-page.js --image</text>
+  <text x="320" y="380" text-anchor="middle" font-family="monospace" font-size="14" fill="#ada592" letter-spacing="3">FILL IN YOUR OWN PHOTO VIA generate-page.js --image</text>
 </svg>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,16 +10,16 @@
   <main class="gate">
     <div class="glyph">◇</div>
 
-    <!-- VUL HIER JOUW EIGEN CRYPTISCHE ZIN EN/OF AFBEELDING IN -->
+    <!-- FILL IN YOUR OWN CRYPTIC SENTENCE AND/OR IMAGE HERE -->
     <p class="cryptic">
-      Wie het zand doorstaat, hoort wat er onder ligt.
+      Whoever endures the sand hears what lies beneath.
     </p>
 
     <form id="gate-form" autocomplete="off">
-      <label for="password">Wachtwoord</label>
+      <label for="password">Password</label>
       <input type="password" id="password" name="password" autocomplete="off" spellcheck="false" required>
-      <button type="submit">Ontsluiten</button>
-      <p class="error" id="error" hidden>Onjuist wachtwoord.</p>
+      <button type="submit">Unlock</button>
+      <p class="error" id="error" hidden>Incorrect password.</p>
     </form>
 
     <section id="revealed" hidden></section>
@@ -28,15 +28,15 @@
   <script src="assets/js/heimdal-crypto.js"></script>
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
-    // VUL HIER DE OUTPUT VAN generate-page.js IN (wachtwoord #1 wordt extern
-    // bekendgemaakt via Instagram/Discord -- niet op deze pagina vermelden).
-    // Huidige waarden zijn een placeholder testketen (zie README: repo is publiek,
-    // dus het testwachtwoord staat expres niet in deze comment).
+    // FILL IN THE OUTPUT OF generate-page.js HERE (password #1 is announced
+    // externally via Instagram/Discord -- do not mention it on this page).
+    // Current values are a placeholder test chain (see README: the repo is
+    // public, so the test password is deliberately not in this comment).
     const PASSWORD_HASH = "273c31a4d8c496ddd240c2f374c8b3a01e2fd4b2debf18e807031e43272a5afe";
-    const PBKDF2_SALT = "heimdal-arg-vaste-zout-waarde-2025";
+    const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;
-    const CIPHERTEXT = "cJgNVpEW4XZEaCRbvrawEf3WTkVVLySvDijbmdjqO7m4+ZtHAaIbdVeHGMb9U/hJEjelEqLqz5l8YWAfz6/vRV7Hfpiq+wIn3ttmbfCyeXB6+tc8z8pxVjA0OG9rDpZJpQrCN7WAaZhTaHjczzBMrw/mAgfzckMc/h46cE8k/KKV+5qPr64vTxsaJqxQFJxYnJczJpWib7UkttsPaFdetdjNbwxtMGDUUoZxND8S1c4mkDbwjuxkgGjMHZitxuFzXD1/N02aXdXVYPii44qH8dt3qa7qRsa7daQjahudKieNrCXHYD4MZsSJWx1+FpE=";
-    const IV = "BNdcyn0wtg5SEHCN";
+    const CIPHERTEXT = "jQnLOtwcQcGV/1XTkt8bWJ8qacANGwDPXe3p3hfv8k3Zn9iWDWWhiB9qSIbEvdfWjcG8rEwtirH1V8qHCE3OVHfNL27jMpDLgYAR3VldtZ7q2FCKLK+ondXXfYV3z4WdH8JcB+2O1FyS96p0th5GUXR0WIP0Vt5V9S7amw11ky8X/v0pQuAJHgn2/llCN2opfmqbpy9nElZGxpVbZ5fMTHDT559Zgk3RcIbDEguSEMeGiagu0+ZizxemKhOzTmlqXUozb0mNc/7X6I8uDG1c4YmPoYDqA2+8TLtWV4c8Mag=";
+    const IV = "MvwtGkeeybtvM0zl";
 
     HeimdalGate.init({
       passwordHash: PASSWORD_HASH,

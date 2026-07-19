@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,13 +9,13 @@
 <body>
   <main class="gate">
     <div class="glyph">◇◇◇◇◇◇</div>
-    <p class="cryptic">Het laatste woord opent de laatste kamer.</p>
+    <p class="cryptic">The last word opens the last room.</p>
 
     <form id="gate-form" autocomplete="off">
-      <label for="password">Wachtwoord</label>
+      <label for="password">Password</label>
       <input type="password" id="password" name="password" autocomplete="off" spellcheck="false" required>
-      <button type="submit">Ontsluiten</button>
-      <p class="error" id="error" hidden>Onjuist wachtwoord.</p>
+      <button type="submit">Unlock</button>
+      <p class="error" id="error" hidden>Incorrect password.</p>
     </form>
 
     <section id="revealed" hidden></section>
@@ -24,19 +24,19 @@
   <script src="assets/js/heimdal-crypto.js"></script>
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
-    // VUL HIER DE OUTPUT VAN generate-page.js IN.
-    // De payload bevat de finale teaser (tekst/foto/video). Bouw je payload-JSON
-    // rond de placeholder-structuur die in de HTML hieronder al klaarstaat
-    // (.teaser-placeholder in style.css), bv.:
+    // FILL IN THE OUTPUT OF generate-page.js HERE.
+    // The payload contains the final teaser (text/photo/video). Build your
+    // payload JSON around the placeholder structure already set up in the HTML
+    // below (.teaser-placeholder in style.css), e.g.:
     //   { "html": "<div class=\"teaser-placeholder\"><p>...</p><img src=\"data:...\"></div>" }
-    // en versleutel 'm met --password + --file. Geen "next" nodig -- dit is het einde.
-    // Huidige waarden zijn een placeholder testketen (repo is publiek, dus het
-    // testwachtwoord staat expres niet in deze comment).
+    // then encrypt it with --password + --file. No "next" needed -- this is the end.
+    // Current values are a placeholder test chain (the repo is public, so the
+    // test password is deliberately not in this comment).
     const PASSWORD_HASH = "d9f426860721cef9e183812d9699599a6118896afc3c04b2e8b284fe3d79738e";
-    const PBKDF2_SALT = "heimdal-arg-vaste-zout-waarde-2025";
+    const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;
-    const CIPHERTEXT = "LRgiEZmpiiCR0t1sboe5SL/xL1+5BD2N+V49vW0GnR/YPTJjMZobW/PnH9dity6MOj1vzUBaC56d0GwjuNnq/4zsq1IJo+dPEAz5msv2sbX7cqEIjW8gaZAa6OcAFh5LxIyhy7+lmF+q8eb3PQiGdlUseo60lSkr+HJT06ZQUcp32w06QJpvYhuAx47lvzK/COVIFiKLOLjEEsX2iPM395Z1wLxC+wsEtEqWVEam+TYRLrzKmK5yzxIzs0j98TopSn2cACARBjC+i/cjhRkKk5QYPqlNe150JuinD369Vs8e0C+I4uSEVaXRUc9KXbQUsrND0FoCTKT7D8BB5VO8vEFy/lGV5h4YnORjNg==";
-    const IV = "BqQvBd6o5hJrx670";
+    const CIPHERTEXT = "K9Tjx9p5nXy9YrolYdD9mo52zGXBhNpvIvIlbR6Rs+kabjtfUgxcnZexhcUJ4gXNYEuAYhBL8/ULe09oTJK8wy1LaIZOMiCQnHPeJqJkjviQe2nVHFPzXI7EIyuivLFACo2f8crWiWpZFw5y4bdtTKoFUwy4OtD28xI/z+d9j8eDixQ5gyDOxe336ywqokyyHO1f71F/WbWQbqIxM6Rn/LmQSAbVle3M1BHlIyCcnOwnXYvAJRtOpC9m0SP34yt0Yx74XKBOcN3eaMIY4yY8Vq3vtco0qwpckXqLk0tbadidN2DGj7aC3g/XdiqUzaNe9A0/YwvRR2mcFZIgSOXps8y9CsqfMbVAzAfj5PGT";
+    const IV = "pMfTXz+ZgR9iYGFw";
 
     HeimdalGate.init({
       passwordHash: PASSWORD_HASH,
