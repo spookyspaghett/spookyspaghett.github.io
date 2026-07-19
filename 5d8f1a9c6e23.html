@@ -25,18 +25,18 @@
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
     // FILL IN THE OUTPUT OF generate-page.js HERE.
-    // The payload contains the final teaser (text/photo/video). Build your
-    // payload JSON around the placeholder structure already set up in the HTML
-    // below (.teaser-placeholder in style.css), e.g.:
-    //   { "html": "<div class=\"teaser-placeholder\"><p>...</p><img src=\"data:...\"></div>" }
-    // then encrypt it with --password + --file. No "next" needed -- this is the end.
-    // Current values are a placeholder test chain (the repo is public, so the
-    // test password is deliberately not in this comment).
+    // The payload contains the final teaser (text/photo/video) in the
+    // .teaser-placeholder section below, PLUS a base64-encoded string players
+    // must decode themselves to get the real link to more material (e.g. a
+    // Google Drive folder). Generate the encoded string with:
+    //   node generate-page.js --base64 --text "https://drive.google.com/drive/folders/YOUR_REAL_FOLDER_ID"
+    // paste it into a <pre> in the payload JSON's `html`, and encrypt the whole
+    // JSON with --password + --file. No "next" field needed -- this is the end.
     const PASSWORD_HASH = "d9f426860721cef9e183812d9699599a6118896afc3c04b2e8b284fe3d79738e";
     const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;
-    const CIPHERTEXT = "K9Tjx9p5nXy9YrolYdD9mo52zGXBhNpvIvIlbR6Rs+kabjtfUgxcnZexhcUJ4gXNYEuAYhBL8/ULe09oTJK8wy1LaIZOMiCQnHPeJqJkjviQe2nVHFPzXI7EIyuivLFACo2f8crWiWpZFw5y4bdtTKoFUwy4OtD28xI/z+d9j8eDixQ5gyDOxe336ywqokyyHO1f71F/WbWQbqIxM6Rn/LmQSAbVle3M1BHlIyCcnOwnXYvAJRtOpC9m0SP34yt0Yx74XKBOcN3eaMIY4yY8Vq3vtco0qwpckXqLk0tbadidN2DGj7aC3g/XdiqUzaNe9A0/YwvRR2mcFZIgSOXps8y9CsqfMbVAzAfj5PGT";
-    const IV = "pMfTXz+ZgR9iYGFw";
+    const CIPHERTEXT = "zBol+LLu2dy0Eq1K60wDIWDrYVIsviP8kedUKjoM9/TZzeLwkhiQwhD16/iYAJ4LdbzSYIMFk8Y1p3oidpA5bzx6bW1qVZA1NXuPzWaEp0l5/+YNtQ2+Zg/Cg0KSr5n+PxFogdCC9o2+rp4uKQOppS0fwOyqJ95dW8gPYwmzPtImBgRPsg78fqJuRz2t1NJtUELo51GWyTIkIFCnLbGis8cEQV2Kzdm1cn2WhkYvGs+0t998A/8485b8gUHZdvp2B1uVQqfdMKEeGO7WvDMCApzBsdy//c5I9epMAPeHhUA+yqrndNh5SA5aUuGAc77fv3/CBOI41yELZow1k+mgQsYx7pyReI5eYnH6dDRExyfl2URHOi3r6bDekw40hKcdBhvAyY9uObBSgVDAYeuXcGFMY1L/qZh1WTeEJq03olCVPRpf2SzXiV2x87v9XYRZrFoSOwDzS0o+N7Rmw2R2R0Ie4A0jhrRL+Qd+Ad/v2jso23bEVPKfpfvDdSE4tsNrJG5W4TG1JGFoztni8pKamIkYiadyo3UCSgqt6hUO8KtXx5N9VZBhOPatLNRoRwalD8YtVeVEk4v2FjS5kO9C5rfhyARW";
+    const IV = "kHC+iAAGPuEZYfEz";
 
     HeimdalGate.init({
       passwordHash: PASSWORD_HASH,
