@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steganography decoder</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <main class="gate">
+    <div class="glyph">◈</div>
+    <p class="cryptic">Some images say more than they show.</p>
+
+    <p class="hint" style="text-align:left">
+      Pick an image. This reads a hidden message from the least-significant bit of every
+      red/green/blue color byte, row by row: a 32-bit length first, then that many UTF-8
+      bytes. It only reveals something if the image was actually encoded with this scheme.
+    </p>
+
+    <input type="file" id="file" accept="image/png,image/bmp">
+    <pre id="output" style="margin-top:1rem; min-height:1.5em;"></pre>
+  </main>
+
+  <script>
+    const output = document.getElementById('output');
+
+    function bitsToInt(bytes, startBit, count) {
+      let value = 0;
+      for (let i = 0; i < count; i++) value = (value << 1) | (bytes[startBit + i] & 1);
+      return value >>> 0;
+    }
+
+    function extractMessage(rgbBytes) {
+      const length = bitsToInt(rgbBytes, 0, 32);
+      const totalBits = 32 + length * 8;
+      if (length < 0 || totalBits > rgbBytes.length) {
+        throw new Error('No valid hidden message found in this image.');
+      }
+      const msgBytes = new Uint8Array(length);
+      for (let b = 0; b < length; b++) msgBytes[b] = bitsToInt(rgbBytes, 32 + b * 8, 8);
+      return new TextDecoder('utf-8', { fatal: true }).decode(msgBytes);
+    }
+
+    document.getElementById('file').addEventListener('change', (event) => {
+      const file = event.target.files[0];
+      if (!file) return;
+      output.textContent = 'Reading...';
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.naturalWidth;
+          canvas.height = img.naturalHeight;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+          const rgba = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+
+          const rgb = new Uint8Array((rgba.length / 4) * 3);
+          for (let i = 0, j = 0; i < rgba.length; i += 4, j += 3) {
+            rgb[j] = rgba[i];
+            rgb[j + 1] = rgba[i + 1];
+            rgb[j + 2] = rgba[i + 2];
+          }
+
+          try {
+            output.textContent = extractMessage(rgb);
+          } catch (err) {
+            output.textContent = 'Could not extract a message from this image.';
+          }
+        };
+        img.onerror = () => {
+          output.textContent = 'Could not load that file as an image.';
+        };
+        img.src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
+  </script>
+</body>
+</html>

@@ -28,15 +28,16 @@
   <script src="assets/js/heimdal-crypto.js"></script>
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
-    // FILL IN THE OUTPUT OF generate-page.js HERE (password #1 is announced
-    // externally via Instagram/Discord -- do not mention it on this page).
-    // Current values are a placeholder test chain (see README: the repo is
-    // public, so the test password is deliberately not in this comment).
-    const PASSWORD_HASH = "273c31a4d8c496ddd240c2f374c8b3a01e2fd4b2debf18e807031e43272a5afe";
+    // Password #1 is announced externally (e.g. a Discord/Instagram clue that
+    // points at a specific user's ID) -- never mention it on this page itself.
+    // Regenerate with generate-page.js if the real password/riddle changes.
+    // The revealed content below is a placeholder riddle -- replace it with
+    // your own via a payload JSON (see README).
+    const PASSWORD_HASH = "1b6bd0985ba9536de8a3ad34bfaea1148557f11e6bd9940ea010b6b5e52fe10f";
     const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;
-    const CIPHERTEXT = "jQnLOtwcQcGV/1XTkt8bWJ8qacANGwDPXe3p3hfv8k3Zn9iWDWWhiB9qSIbEvdfWjcG8rEwtirH1V8qHCE3OVHfNL27jMpDLgYAR3VldtZ7q2FCKLK+ondXXfYV3z4WdH8JcB+2O1FyS96p0th5GUXR0WIP0Vt5V9S7amw11ky8X/v0pQuAJHgn2/llCN2opfmqbpy9nElZGxpVbZ5fMTHDT559Zgk3RcIbDEguSEMeGiagu0+ZizxemKhOzTmlqXUozb0mNc/7X6I8uDG1c4YmPoYDqA2+8TLtWV4c8Mag=";
-    const IV = "MvwtGkeeybtvM0zl";
+    const CIPHERTEXT = "//xWVtqB/KvxXUMqVxXO1GQhvtDKOL1GcbuJzuTKLPGj/9LQ81pGA8gqgxAa7jtea1eM6ArFhrDNH9hZS4vZBvmWHkjj9JphT/WAyH8IVFATZKL389G6nilUnaQaJakw0h7k3MjO10efFYA6UnY4Rl/rh7JBCnNPyaXIoorK1bJ+2vor9PKXjaP9DoO7ZPQizsNrBGeD5/hiaIfFMBBC2A/WCi2v/yk/CbHD2zoD8CS6XFFef5O+aKPtCpWw5prTFUF+an+YQQZYskB+qW1lHcU7lSIlS553fQIfIPKWtBmV9d+kxFULgZ1J4Y64VLYf4XHMqp3gnCTb1RygdWWrvzEWhjgSDf6EszP/YDOKpttg4g5KEqNG5w==";
+    const IV = "JkBBiqYBw02Av8Ya";
 
     HeimdalGate.init({
       passwordHash: PASSWORD_HASH,

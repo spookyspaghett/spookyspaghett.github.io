@@ -9,7 +9,7 @@
 <body>
   <main class="gate">
     <div class="glyph">◇◇</div>
-    <p class="cryptic">A face in the sand, a song that carries the key.</p>
+    <p class="cryptic">Some pictures are worth more than they show.</p>
 
     <form id="gate-form" autocomplete="off">
       <label for="password">Password</label>
@@ -26,21 +26,20 @@
   <script>
     // FILL IN THE OUTPUT OF generate-page.js HERE.
     // This password comes from the answer to the previous page.
-    // The payload behind it contains: an <img> (photo) + a Caesar ciphertext.
-    //
-    // IMPORTANT about the Caesar ciphertext: the shift value is NOWHERE in
-    // this site -- players get it from the club song. Generate the ciphertext
-    // locally with:
-    //   node generate-page.js --caesar --shift <NUMBER_FROM_CLUB_SONG> --text "<real message/password>"
-    // then paste the result (together with your photo) into a payload JSON
-    // that you encrypt with --password + --file. See README.md for the full
-    // recipe. Current values are a placeholder test chain (the repo is public,
-    // so the test password and demo message are deliberately not in this comment).
+    // The payload behind it contains a photo with a message hidden in its pixel
+    // LSBs (steganography). Generate it locally with:
+    //   node generate-page.js --stego-encode --image your-photo.bmp --message "<next password>" --out stego.png
+    //   node generate-page.js --stego-decode --image stego.png   (to verify before publishing)
+    // Then build a payload JSON with that PNG as a data URL inside an <img>, e.g.:
+    //   node generate-page.js --image stego.png   (prints the data: URL to paste into the <img src>)
+    // and encrypt the JSON with --password + --file. Players extract the hidden
+    // message themselves with assets/tools/stego-decoder.html (linked from the
+    // revealed content). See README.md for the full recipe.
     const PASSWORD_HASH = "fb840d150d0a4fd998b5fc78f55fe94e96a5cf8404ffc696721824e118b89b1c";
     const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;
-    const CIPHERTEXT = "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";
-    const IV = "kjEwoaiKECeDpXuV";
+    const CIPHERTEXT = "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";
+    const IV = "lJCDhLcb73MtIe9L";
 
     HeimdalGate.init({
       passwordHash: PASSWORD_HASH,

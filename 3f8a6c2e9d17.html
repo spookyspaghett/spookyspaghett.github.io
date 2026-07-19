@@ -9,7 +9,7 @@
 <body>
   <main class="gate">
     <div class="glyph">◇◇◇</div>
-    <p class="cryptic">Three layers cover what is true.</p>
+    <p class="cryptic">A song that carries the key, if you know the tune.</p>
 
     <form id="gate-form" autocomplete="off">
       <label for="password">Password</label>
@@ -25,18 +25,16 @@
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
     // FILL IN THE OUTPUT OF generate-page.js HERE.
-    // The payload contains an encoding-stack puzzle: plaintext -> hex -> ROT13 -> base64.
-    // Players must peel this back in reverse order (base64 -> ROT13 -> hex) to
-    // find the next password. Generate the puzzle text locally with:
-    //   node generate-page.js --encode-stack --text "<real message/password>"
-    // then encrypt the payload JSON with --password + --file.
-    // Current values are a placeholder test chain (the repo is public, so the
-    // test password and demo message are deliberately not in this comment).
+    // The payload contains a Caesar cipher. The shift value comes from the club
+    // song and is NOWHERE in this site -- only in this local command:
+    //   node generate-page.js --caesar --shift <NUMBER_FROM_CLUB_SONG> --text "<next password>"
+    // Paste the printed ciphertext into the `html` of the payload JSON (e.g. in
+    // a <pre>), and encrypt that JSON with --password + --file.
     const PASSWORD_HASH = "9c73ba134128737810dfb0a3528a2d2aae87eaba0b725a152758a3de40a4f5bc";
     const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;
-    const CIPHERTEXT = "T1hXJfrErIe+aNZo7XE1nPX94OZO5Cn2720E+/UYCm578aVUyLM+JjARA8I9mE4xUxvFI9hDwzXjVkNNgLoFTFdHqPFYKQEeSvoNQ3ivSOouU5OOXjEBgcOmw+5z24c25lkgo+m2OEKV4qlVnGcolTLp3zvGQxK5zgZk5GssBCfrvlJdsWg0uoORjxGTt5jwZZbruofCC2D41cMRdTkBaiTuUh18roj1JdUXkTB9LDx5ZDSqdQNtcpQ+JI/1H9yG9/9iS/BkOx3YLYk2ybvz+3NMEZdycw/0BRrkb1ifaSyJKDLIggbBRkw5eL5+eBJ/DqzOD0TqeIuDH5HKcABuOpaTGg==";
-    const IV = "zuBxNankkbB8v+vo";
+    const CIPHERTEXT = "0H8uTwTTYLKb4rJ0QzRzivWnZzUsPz4OUJCS+OFg9mj5z4V1FIS7xWga3E9NchsFk2/M6oXiruBfzGgMUus9cVKKNuFS5V7KCrHCGJC2HHSZE/XgqOWm7vN//m7VPw9dqTrxYBM/aqGRIWzGSNZ/wEbi+3i3YWflcnhLVjjomvuensFb1gHaij19yaYvxGuQMHYYEZ+rrzNVygI+MGasadt05D1AFwC9GmEPoPNPBH7P6z8c8Gu9/FrHuEy1AVccJNPdjpRVcHncv92cr9Vh+ri5zKH82Lz5TGf7z+rEhknERkODhj4hIvH1kgs5tRFdKXfhJQ==";
+    const IV = "NST9cYeLorByfn/E";
 
     HeimdalGate.init({
       passwordHash: PASSWORD_HASH,
