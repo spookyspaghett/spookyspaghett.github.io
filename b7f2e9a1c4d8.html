@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Heimdal</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <main class="gate">
+    <div class="glyph">◇◇</div>
+    <p class="cryptic">Een gezicht in het zand, een lied dat de sleutel draagt.</p>
+
+    <form id="gate-form" autocomplete="off">
+      <label for="password">Wachtwoord</label>
+      <input type="password" id="password" name="password" autocomplete="off" spellcheck="false" required>
+      <button type="submit">Ontsluiten</button>
+      <p class="error" id="error" hidden>Onjuist wachtwoord.</p>
+    </form>
+
+    <section id="revealed" hidden></section>
+  </main>
+
+  <script src="assets/js/heimdal-crypto.js"></script>
+  <script src="assets/js/heimdal-gate.js"></script>
+  <script>
+    // VUL HIER DE OUTPUT VAN generate-page.js IN.
+    // Dit wachtwoord komt uit het antwoord van de vorige pagina.
+    // De payload hierachter bevat: een <img> (foto) + een Caesar-cijfertekst.
+    //
+    // BELANGRIJK over de Caesar-cijfertekst: de shift-waarde staat NERGENS in
+    // deze site -- spelers halen die uit het clublied. Genereer de cijfertekst
+    // lokaal met:
+    //   node generate-page.js --caesar --shift <GETAL_UIT_CLUBLIED> --text "<echte boodschap/wachtwoord>"
+    // en plak het resultaat vervolgens (samen met je foto) in een payload-JSON
+    // die je met --password + --file versleutelt. Zie README.md voor het volledige
+    // recept. Huidige waarden zijn een placeholder testketen (repo is publiek, dus
+    // het testwachtwoord en de demo-boodschap staan expres niet in deze comment).
+    const PASSWORD_HASH = "fb840d150d0a4fd998b5fc78f55fe94e96a5cf8404ffc696721824e118b89b1c";
+    const PBKDF2_SALT = "heimdal-arg-vaste-zout-waarde-2025";
+    const PBKDF2_ITERATIONS = 100000;
+    const CIPHERTEXT = "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";
+    const IV = "VCqEpoNq27aiundG";
+
+    HeimdalGate.init({
+      passwordHash: PASSWORD_HASH,
+      salt: PBKDF2_SALT,
+      iterations: PBKDF2_ITERATIONS,
+      ciphertext: CIPHERTEXT,
+      iv: IV,
+    });
+  </script>
+</body>
+</html>

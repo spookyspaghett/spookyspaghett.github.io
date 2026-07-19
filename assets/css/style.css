@@ -1,0 +1,185 @@
+/* Heimdal ARG -- sober donker thema, wit/zwart, woestijn/zand-sfeer via gradients. */
+
+:root {
+  --bg: #0a0908;
+  --bg-dune-1: #14110d;
+  --bg-dune-2: #1d1812;
+  --ink: #ece6d8;
+  --ink-dim: #ada592;
+  --accent: #f2e9d8;
+  --line: #38322a;
+  --error: #c9776a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: 'Courier New', ui-monospace, monospace;
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(ellipse 120% 60% at 50% -10%, var(--bg-dune-2) 0%, transparent 60%),
+    repeating-linear-gradient(
+      115deg,
+      rgba(236, 230, 216, 0.015) 0px,
+      rgba(236, 230, 216, 0.015) 2px,
+      transparent 2px,
+      transparent 6px
+    ),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-dune-1) 55%, var(--bg) 100%);
+  background-attachment: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  letter-spacing: 0.01em;
+  line-height: 1.6;
+}
+
+.gate {
+  width: 100%;
+  max-width: 42rem;
+  text-align: center;
+}
+
+.glyph {
+  font-size: 2rem;
+  letter-spacing: 0.4em;
+  color: var(--ink-dim);
+  margin-bottom: 1.5rem;
+  user-select: none;
+}
+
+.cryptic {
+  color: var(--ink-dim);
+  font-style: italic;
+  margin: 0 0 2.5rem;
+  font-size: 1.05rem;
+}
+
+.photo-frame {
+  border: 1px solid var(--line);
+  padding: 0.5rem;
+  margin: 0 0 1.5rem;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.photo-frame img {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: grayscale(0.3) contrast(1.05);
+}
+
+form#gate-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+label {
+  color: var(--ink-dim);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+}
+
+input[type='password'],
+input[type='text'] {
+  width: 100%;
+  max-width: 20rem;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  padding: 0.65rem 0.9rem;
+  font: inherit;
+  text-align: center;
+  letter-spacing: 0.2em;
+}
+
+input[type='password']:focus,
+input[type='text']:focus {
+  outline: none;
+  border-color: var(--ink-dim);
+}
+
+button {
+  background: transparent;
+  border: 1px solid var(--ink-dim);
+  color: var(--ink);
+  padding: 0.6rem 1.6rem;
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+button:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.error {
+  color: var(--error);
+  font-size: 0.85rem;
+  margin: 0.25rem 0 0;
+}
+
+#revealed {
+  margin-top: 1rem;
+  text-align: left;
+  border-top: 1px solid var(--line);
+  padding-top: 1.5rem;
+}
+
+#revealed pre {
+  white-space: pre-wrap;
+  word-break: break-word;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid var(--line);
+  padding: 1rem;
+  color: var(--accent);
+  font-size: 0.95rem;
+}
+
+#revealed .hint {
+  color: var(--ink-dim);
+  font-size: 0.9rem;
+}
+
+.next-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid var(--ink-dim);
+  padding-bottom: 0.15rem;
+  letter-spacing: 0.1em;
+}
+
+.next-link:hover {
+  border-color: var(--accent);
+}
+
+.teaser-placeholder {
+  border: 1px dashed var(--line);
+  padding: 1.5rem;
+  margin-top: 1rem;
+  color: var(--ink-dim);
+  font-size: 0.85rem;
+}
+
+[hidden] {
+  display: none !important;
+}
