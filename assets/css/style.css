@@ -59,13 +59,6 @@ body {
   user-select: none;
 }
 
-.cryptic {
-  color: var(--ink-dim);
-  font-style: italic;
-  margin: 0 0 2.5rem;
-  font-size: 1.05rem;
-}
-
 .photo-frame {
   border: 1px solid var(--line);
   padding: 0.5rem;
