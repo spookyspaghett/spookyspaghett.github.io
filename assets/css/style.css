@@ -2,8 +2,8 @@
 
 :root {
   --bg: #0a0908;
-  --bg-dune-1: #14110d;
-  --bg-dune-2: #1d1812;
+  --bg-layer-1: #14110d;
+  --bg-layer-2: #1d1812;
   --ink: #ece6d8;
   --ink-dim: #ada592;
   --accent: #f2e9d8;
@@ -27,7 +27,7 @@ body {
   font-family: 'Courier New', ui-monospace, monospace;
   background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 120% 60% at 50% -10%, var(--bg-dune-2) 0%, transparent 60%),
+    radial-gradient(ellipse 120% 60% at 50% -10%, var(--bg-layer-2) 0%, transparent 60%),
     repeating-linear-gradient(
       115deg,
       rgba(236, 230, 216, 0.015) 0px,
@@ -35,7 +35,7 @@ body {
       transparent 2px,
       transparent 6px
     ),
-    linear-gradient(180deg, var(--bg) 0%, var(--bg-dune-1) 55%, var(--bg) 100%);
+    linear-gradient(180deg, var(--bg) 0%, var(--bg-layer-1) 55%, var(--bg) 100%);
   background-attachment: fixed;
   display: flex;
   align-items: center;
