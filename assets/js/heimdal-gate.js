@@ -43,7 +43,7 @@
             const link = document.createElement('a');
             link.href = payload.next;
             link.className = 'next-link';
-            link.textContent = payload.nextLabel || 'Continue →';
+            link.textContent = payload.nextLabel || '→';
             revealedEl.appendChild(link);
           }
         }
