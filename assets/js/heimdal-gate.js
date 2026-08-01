@@ -6,7 +6,7 @@
   }
 
   // config:
-  //   passwordHash, salt, iterations, ciphertext, iv  -> from generate-page.js
+  //   passwordHash, salt, iterations, ciphertext, iv
   //   formSelector, passwordInputSelector, errorSelector, revealedSelector
   //   onReveal(payload, revealedEl)  -> optional, override for custom rendering
   function init(config) {

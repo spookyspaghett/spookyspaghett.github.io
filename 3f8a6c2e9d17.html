@@ -24,15 +24,7 @@
   <script src="assets/js/heimdal-crypto.js"></script>
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
-    // FILL IN THE OUTPUT OF generate-page.js HERE.
-    // The payload contains a list of numbers: the next password, XORed byte-for-byte
-    // against the club song text (as the key stream), repeating if the message is
-    // longer than the song. The key text is NOWHERE in this site -- only in this
-    // local command:
-    //   node generate-page.js --xor --text "<next password>" --key-file clublied.txt
-    // Paste the printed numbers into the `html` of the payload JSON (e.g. in a
-    // <pre>), and encrypt that JSON with --password + --file. Verify with:
-    //   node generate-page.js --xor-decode --numbers "1,2,3,..." --key-file clublied.txt
+    // FILL IN THE ENCRYPTED PAYLOAD HERE.
     const PASSWORD_HASH = "9c73ba134128737810dfb0a3528a2d2aae87eaba0b725a152758a3de40a4f5bc";
     const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;

@@ -24,14 +24,7 @@
   <script src="assets/js/heimdal-crypto.js"></script>
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
-    // FILL IN THE OUTPUT OF generate-page.js HERE.
-    // The payload contains the final teaser (text/photo/video) in the
-    // .teaser-placeholder section below, PLUS a base64-encoded string players
-    // must decode themselves to get the real link to more material (e.g. a
-    // Google Drive folder). Generate the encoded string with:
-    //   node generate-page.js --base64 --text "https://drive.google.com/drive/folders/YOUR_REAL_FOLDER_ID"
-    // paste it into a <pre> in the payload JSON's `html`, and encrypt the whole
-    // JSON with --password + --file. No "next" field needed -- this is the end.
+    // FILL IN THE ENCRYPTED PAYLOAD HERE.
     const PASSWORD_HASH = "d9f426860721cef9e183812d9699599a6118896afc3c04b2e8b284fe3d79738e";
     const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;

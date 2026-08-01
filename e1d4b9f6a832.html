@@ -24,15 +24,7 @@
   <script src="assets/js/heimdal-crypto.js"></script>
   <script src="assets/js/heimdal-gate.js"></script>
   <script>
-    // Real password #4 is wired in (recovered from page 3's XOR/club-song puzzle --
-    // never written here, this is a public repo). The payload's `html` still
-    // contains a PLACEHOLDER hint + target hash -- replace the target with your
-    // real one once you have it:
-    //   node generate-page.js --sha256 --text "<real answer word>"
-    // Keep the hash hidden as an HTML comment (<!-- target-hash: ... -->) rather
-    // than plain visible text -- players have to open View Source or the
-    // DevTools Elements panel (F12) to find it. Re-encrypt with the SAME real
-    // password (see your own notes) + --file so PASSWORD_HASH stays correct.
+    // FILL IN THE ENCRYPTED PAYLOAD HERE.
     const PASSWORD_HASH = "044b32ea7465a1bb8eeed60e0fec9e8e147ebe87d0cca89e24b2919722c87792";
     const PBKDF2_SALT = "heimdal-arg-fixed-salt-value-2025";
     const PBKDF2_ITERATIONS = 100000;

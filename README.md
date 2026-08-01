@@ -5,10 +5,9 @@ chain of 6 password-locked pages. Pure HTML/CSS/JS, no build step, runs directly
 GitHub Pages.
 
 This is a public repository, so this README intentionally does **not** describe how any
-individual page's puzzle works, what technique it uses, or what the real or test
-passwords are. That information lives only in the comments of the specific page you're
-editing (visible once you already have that page open to work on it) and in
-`generate-page.js --help`, not here.
+individual page's puzzle works, what technique it uses, what the real or test passwords
+are, or name any tool used to prepare page content. That information is kept in private
+notes outside this repo.
 
 ## Structure
 
@@ -23,9 +22,6 @@ robots.txt                   plain, no puzzle content
 assets/css/style.css         shared dark/sand theme
 assets/js/heimdal-crypto.js  shared Web Crypto helpers (SHA-256, PBKDF2, AES-GCM)
 assets/js/heimdal-gate.js    shared password-gate logic (used by every page)
-assets/tools/                supporting tools linked from specific pages when needed
-generate-page.js             standalone Node tool to encrypt passwords/content and
-                              generate puzzle assets -- run `--help` for the full list
 ```
 
 The filenames for pages 2 through 6 are deliberately unpredictable (hash-like strings,
@@ -48,9 +44,9 @@ ciphertext live in the repo -- both are useless without the right password. This
 uniformly to every page regardless of what its specific puzzle is.
 
 Some pages already have their real password wired in; others still contain a working
-test chain so you can verify the site functions before filling in the real puzzle. Every
-spot you need to edit is marked with a `// FILL IN ... HERE` comment in that page's own
-file -- open the page you're working on to see what it needs and how to regenerate it.
+test chain so you can verify the site functions. Every page marks its encrypted block
+with a `// FILL IN ... HERE` comment -- the comment itself intentionally says nothing
+about how to produce the replacement, since that would be published alongside it.
 
 ## Testing locally
 
@@ -58,53 +54,22 @@ You need to view the site through a local server -- not by opening the HTML file
 directly (`file://`), since a few things (relative links to `assets/tools/`, and in
 general anything that behaves differently under `file://`) work more reliably over HTTP.
 
-With Node (already required for `generate-page.js`):
-
 ```bash
 npx serve .
 # or
 npx http-server .
-```
-
-Or with Python:
-
-```bash
+# or
 python -m http.server 8000
 ```
 
 Then open `http://localhost:8000/` (or whichever port the tool reports) and walk the
 chain with your passwords.
 
-## Using `generate-page.js`
+## Updating page content
 
-Requires Node.js 18+ (uses the built-in `node:crypto` webcrypto implementation, no
-dependencies). Only ever run this script locally -- it is not part of the live site.
-
-```bash
-node generate-page.js --help
-```
-
-prints the full list of available commands. The core one is:
-
-```bash
-node generate-page.js --password "my-real-password" --file payload.json
-```
-
-which hashes the password and AES-GCM-encrypts the payload, printing 5 ready-to-paste
-`const` lines (`PASSWORD_HASH`, `PBKDF2_SALT`, `PBKDF2_ITERATIONS`, `CIPHERTEXT`, `IV`)
-for the `// FILL IN ... HERE` spot in that page. `payload.json` must match the JSON
-shape that page's script expects -- see the comment in that specific page's `<script>`
-block for the exact fields and, where relevant, the command to generate that page's
-puzzle content before encrypting it.
-
-> If you generate for the same page more than once, reuse the same password and the
-> same `--salt` each time so `PASSWORD_HASH` doesn't accidentally change.
-
-## Placeholders you need to fill in
-
-Open each HTML page and look for its `// FILL IN ... HERE` comment block -- it explains
-exactly what that page needs and which `generate-page.js` command to run. Replace any
-remaining test content with your real puzzle/password before the site goes live.
+The tool used to hash passwords and produce each page's encrypted payload is kept
+private, outside this repository, along with notes on what each page needs. If you're
+the site owner and don't have access to those, you already know who to ask.
 
 ## Going live on GitHub Pages
 
@@ -127,6 +92,7 @@ remaining test content with your real puzzle/password before the site goes live.
   from the high iteration count and the entropy of your passwords, not from keeping the
   salt secret.
 - Pick real passwords that aren't trivial to guess once a player knows it's this ARG.
-- Never write a real or test password, or a description of how a specific puzzle works,
-  anywhere that isn't strictly needed (not in this README, not in commit messages) --
-  this repo is public, so anything you type here is readable by everyone.
+- Never write a real or test password, a description of how a specific puzzle works, or
+  the name of any content-generation tool anywhere in this repo -- not in code comments,
+  not in this README, not in commit messages. GitHub makes all of it, including full
+  history, browsable to anyone.
